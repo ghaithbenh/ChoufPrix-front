@@ -15,8 +15,11 @@ export const productService = {
         return response.data;
     },
 
-    async searchProducts(params: { q: string; minPrice?: number; maxPrice?: number }): Promise<Product[]> {
-        const response = await apiClient.get<Product[]>('/products/search', { params });
+    async searchProducts(params: { q: string; minPrice?: number; maxPrice?: number }): Promise<{
+        normalized: any;
+        results: Product[];
+    }> {
+        const response = await apiClient.get('/products/search', { params });
         return response.data;
     },
 

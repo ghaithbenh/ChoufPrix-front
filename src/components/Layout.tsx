@@ -1,11 +1,15 @@
 import React from 'react';
 import { Search, Bell, ShoppingBag } from 'lucide-react';
+import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from '@clerk/clerk-react';
 
 interface LayoutProps {
     children: React.ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+    const { user } = useUser();
+    const isAdmin = user?.publicMetadata?.role === 'admin';
+
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col">
             <header className="sticky top-0 z-50 glass border-b border-slate-200">
@@ -33,7 +37,24 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                                     <Bell className="w-5 h-5" />
                                     <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white" />
                                 </button>
-                                <div className="w-8 h-8 rounded-full bg-slate-200 border border-slate-300" />
+
+                                <SignedOut>
+                                    <SignInButton mode="modal">
+                                        <button className="px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-xl shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all">
+                                            Se connecter
+                                        </button>
+                                    </SignInButton>
+                                </SignedOut>
+                                <SignedIn>
+                                    <div className="flex items-center gap-3">
+                                        {isAdmin && (
+                                            <span className="px-2 py-1 bg-amber-100 text-amber-700 text-[10px] font-black uppercase rounded-lg border border-amber-200">
+                                                👑 Admin
+                                            </span>
+                                        )}
+                                        <UserButton afterSignOutUrl="/" />
+                                    </div>
+                                </SignedIn>
                             </div>
                         </div>
                     </div>
