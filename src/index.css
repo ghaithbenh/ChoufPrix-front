@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-50: oklch(0.97 0.01 240);
+  --color-primary-100: oklch(0.91 0.03 240);
+  --color-primary-200: oklch(0.83 0.07 240);
+  --color-primary-300: oklch(0.72 0.12 240);
+  --color-primary-400: oklch(0.6 0.16 240);
+  --color-primary-500: oklch(0.51 0.19 240);
+  --color-primary-600: oklch(0.44 0.18 240);
+  --color-primary-700: oklch(0.38 0.16 240);
+  --color-primary-800: oklch(0.32 0.14 240);
+  --color-primary-900: oklch(0.28 0.11 240);
+  --color-primary-950: oklch(0.18 0.07 240);
+
+  --font-sans: "Inter", "system-ui", "-apple-system", "sans-serif";
+}
+
+:root {
+  background-color: #f8fafc;
+  color: #0f172a;
+  font-family: var(--font-sans);
+}
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+}
+
+.glass {
+  @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
+}
+
+.premium-card {
+  @apply bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1;
+}
+
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 font-bold;
+}
