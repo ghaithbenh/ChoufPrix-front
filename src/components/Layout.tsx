@@ -24,9 +24,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
                         <div className="hidden md:flex items-center gap-6">
                             <nav className="flex gap-4">
-                                <a href="#" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Dashboard</a>
+                                <a href="/" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Browse</a>
+                                <a href="/dashboard" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Dashboard</a>
                                 <a href="#" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Tracked Items</a>
-                                <a href="#" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Stores</a>
                             </nav>
                             <div className="h-6 w-px bg-slate-200" />
                             <div className="flex items-center gap-3">
