@@ -7,6 +7,8 @@ export interface Product {
     image: string;
     description?: string;
     category?: string;
+    parentCategory?: string;
+    subcategory?: string;
     lastUpdated: string;
 }
 
@@ -23,6 +25,8 @@ export interface QueryParams {
     minPrice?: number;
     maxPrice?: number;
     category?: string;
+    parentCategory?: string;
+    subcategory?: string;
     sort?: string;
     page?: number;
     limit?: number;

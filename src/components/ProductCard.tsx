@@ -34,9 +34,17 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
             </div>
 
             <div className="flex flex-col flex-1">
-                <h3 className="font-bold text-slate-800 line-clamp-2 min-h-[3rem] group-hover:text-blue-600 transition-colors leading-tight mb-4">
+                <h3 className="font-bold text-slate-800 line-clamp-2 min-h-[3rem] group-hover:text-blue-600 transition-colors leading-tight mb-2">
                     {product.name}
                 </h3>
+
+                {product.category && (
+                    <div className="flex items-center gap-1.5 mb-4">
+                        <span className="px-2 py-0.5 bg-slate-50 text-slate-400 text-[10px] font-bold rounded-lg border border-slate-100 uppercase tracking-tight">
+                            {product.category}
+                        </span>
+                    </div>
+                )}
                 
                 <div className="mt-auto flex items-center justify-between">
                     <div className="flex flex-col">

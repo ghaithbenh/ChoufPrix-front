@@ -89,6 +89,11 @@ const ProductDetail: React.FC = () => {
                                 <Clock className="w-4 h-4" />
                                 {formatDate(product.lastUpdated)}
                             </div>
+                            {product.category && (
+                                <div className="flex items-center gap-1.5 text-blue-600 text-xs font-bold bg-blue-50 px-3 py-1.5 rounded-full border border-blue-100 uppercase tracking-tight">
+                                    {product.category}
+                                </div>
+                            )}
                         </div>
 
                         <h1 className="text-4xl font-black text-slate-900 mb-4 leading-[1.1]">

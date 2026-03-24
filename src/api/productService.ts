@@ -15,7 +15,7 @@ export const productService = {
         return response.data;
     },
 
-    async searchProducts(params: { q: string; minPrice?: number; maxPrice?: number }): Promise<{
+    async searchProducts(params: { q: string; minPrice?: number; maxPrice?: number; category?: string; parentCategory?: string; subcategory?: string }): Promise<{
         normalized: any;
         results: Product[];
     }> {
@@ -30,6 +30,16 @@ export const productService = {
 
     async getStores(): Promise<string[]> {
         const response = await apiClient.get<string[]>('/products/stores');
+        return response.data;
+    },
+
+    async getCategories(): Promise<string[]> {
+        const response = await apiClient.get<string[]>('/products/categories');
+        return response.data;
+    },
+
+    async getTaxonomy(): Promise<Record<string, string[]>> {
+        const response = await apiClient.get<Record<string, string[]>>('/products/taxonomy');
         return response.data;
     },
 

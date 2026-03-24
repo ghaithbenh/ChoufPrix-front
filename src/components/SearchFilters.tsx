@@ -55,7 +55,7 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
                             : 'text-slate-500 hover:bg-slate-50'
                         }`}
                     >
-                        Tous
+                        Tous les Magasins
                     </button>
                     {stores.map(s => (
                         <button
