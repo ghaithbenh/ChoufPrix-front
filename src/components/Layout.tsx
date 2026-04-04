@@ -1,6 +1,7 @@
 import React from 'react';
 import { Search, Bell, ShoppingBag } from 'lucide-react';
 import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from '@clerk/clerk-react';
+import Chatbot from './Chatbot';
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -70,6 +71,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     © {new Date().getFullYear()} ChoufPrix - Meilleurs prix en Tunisie
                 </div>
             </footer>
+            <Chatbot />
         </div>
     );
 };
