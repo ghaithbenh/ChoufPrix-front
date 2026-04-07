@@ -8,6 +8,7 @@ import Pagination from '../components/Pagination';
 import SkeletonCard from '../components/SkeletonCard';
 import { ShoppingBag, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import HeroScene from '../components/HeroScene';
 
 const Home: React.FC = () => {
     const navigate = useNavigate();
@@ -80,13 +81,15 @@ const Home: React.FC = () => {
 
     return (
         <div className="animate-in fade-in duration-700">
-            <div className="mb-12 text-center">
-                <h2 className="text-5xl font-black text-slate-900 mb-4 tracking-tight">
-                    Trouvez le meilleur prix en <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">Tunisie</span>
-                </h2>
-                <p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto">
-                    Comparez instantanément les prix sur MyTek, Tunisianet et plus encore.
-                </p>
+            <div className="mb-12 flex flex-col items-center justify-center gap-6 text-center">
+                <div className="flex-shrink-0 w-full flex justify-center mt-4">
+                    <HeroScene />
+                </div>
+                <div className="max-w-4xl px-4">
+                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight leading-tight">
+                        Trouvez le meilleur prix en <span className="gradient-text">Tunisie</span>
+                    </h2>
+                </div>
             </div>
 
             <div className="flex flex-col md:flex-row gap-8">
@@ -94,10 +97,10 @@ const Home: React.FC = () => {
                     taxonomy={taxonomy}
                     selectedParentCategory={parentCategory}
                     selectedSubcategory={subcategory}
-                    onCategoryChange={(parent, sub) => { 
-                        setParentCategory(parent); 
+                    onCategoryChange={(parent, sub) => {
+                        setParentCategory(parent);
                         setSubcategory(sub);
-                        setPage(1); 
+                        setPage(1);
                     }}
                 />
 
@@ -166,12 +169,12 @@ const Home: React.FC = () => {
                             />
                         </>
                     ) : (
-                        <div className="flex flex-col items-center justify-center py-32 bg-white rounded-[2.5rem] border border-slate-100 shadow-sm">
-                            <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mb-6">
-                                <ShoppingBag className="w-12 h-12 text-slate-300" />
+                        <div className="flex flex-col items-center justify-center py-32 bg-white rounded-[2.5rem] border border-gray-100 shadow-sm transition-colors duration-300">
+                            <div className="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mb-6 transition-colors duration-300">
+                                <ShoppingBag className="w-12 h-12 text-gray-300" />
                             </div>
-                            <h3 className="text-2xl font-bold text-slate-800 mb-2">Aucun produit trouvé</h3>
-                            <p className="text-slate-400 font-medium">Réinitialisez les filtres pour voir plus de produits.</p>
+                            <h3 className="text-2xl font-bold text-gray-800 mb-2 transition-colors duration-300">Aucun produit trouvé</h3>
+                            <p className="text-gray-400 font-medium transition-colors duration-300">Réinitialisez les filtres pour voir plus de produits.</p>
                         </div>
                     )}
                 </div>
