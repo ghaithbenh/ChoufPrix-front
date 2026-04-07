@@ -83,6 +83,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
                 <div className={`absolute top-3 left-3 px-2.5 py-1 rounded-full border shadow-sm text-[10px] font-bold uppercase tracking-wider ${getStoreColor(product.store)}`}>
                     {product.store}
                 </div>
+                {product.source === 'user' && (
+                    <div className="absolute top-10 left-3 px-2.5 py-1 rounded-full bg-blue-600 text-white border border-blue-500 shadow-sm text-[10px] font-black uppercase tracking-wider">
+                        Communauté
+                    </div>
+                )}
                 {/* Track Heart Button */}
                 <button
                     onClick={handleTrackToggle}

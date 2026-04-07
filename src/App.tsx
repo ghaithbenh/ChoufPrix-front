@@ -5,6 +5,9 @@ import Home from './pages/Home';
 import ProductDetail from './pages/ProductDetail';
 import Dashboard from './pages/Dashboard';
 import TrackedItems from './pages/TrackedItems';
+import AddProduct from './pages/AddProduct';
+import MyProducts from './pages/MyProducts';
+import Marketplace from './pages/Marketplace';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,6 +28,9 @@ function App() {
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/tracked" element={<TrackedItems />} />
+            <Route path="/add-product" element={<AddProduct />} />
+            <Route path="/my-products" element={<MyProducts />} />
+            <Route path="/marketplace" element={<Marketplace />} />
           </Routes>
         </Layout>
       </Router>

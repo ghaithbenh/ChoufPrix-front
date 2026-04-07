@@ -15,7 +15,7 @@ export const productService = {
         return response.data;
     },
 
-    async searchProducts(params: { q: string; minPrice?: number; maxPrice?: number; category?: string; parentCategory?: string; subcategory?: string }): Promise<{
+    async searchProducts(params: { q: string; minPrice?: number; maxPrice?: number; category?: string; parentCategory?: string; subcategory?: string; source?: string }): Promise<{
         normalized: any;
         results: Product[];
     }> {
@@ -46,5 +46,25 @@ export const productService = {
     async getPriceHistory(productId: string): Promise<PriceHistory[]> {
         const response = await apiClient.get<PriceHistory[]>(`/price-history/${productId}`);
         return response.data;
+    },
+
+    async createProduct(data: any, token: string): Promise<Product> {
+        const response = await apiClient.post<Product>('/products', data, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data;
+    },
+
+    async getMyProducts(token: string): Promise<Product[]> {
+        const response = await apiClient.get<Product[]>('/products/user/all', {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data;
+    },
+
+    async deleteProduct(id: string, token: string): Promise<void> {
+        await apiClient.delete(`/products/${id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
     },
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Bell, ShoppingBag } from 'lucide-react';
+import { Search, Bell, ShoppingBag, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from '@clerk/clerk-react';
 import Chatbot from './Chatbot';
@@ -28,8 +28,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                             <nav className="flex items-center gap-4">
                                 <Link to="/" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Browse</Link>
                                 <Link to="/dashboard" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Dashboard</Link>
+                                <Link to="/marketplace" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Marketplace</Link>
                                 <SignedIn>
                                     <Link to="/tracked" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Tracked Items</Link>
+                                    <Link to="/my-products" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Mes Annonces</Link>
                                 </SignedIn>
                             </nav>
                             <div className="h-6 w-px bg-gray-200" />
@@ -56,6 +58,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                                                 👑 Admin
                                             </span>
                                         )}
+                                        <Link 
+                                            to="/add-product"
+                                            className="px-4 py-2 bg-orange-500 text-white text-sm font-bold rounded-lg shadow-lg hover:bg-orange-600 transition-all flex items-center gap-2"
+                                        >
+                                            <Plus className="w-4 h-4" />
+                                            <span>Vendre</span>
+                                        </Link>
                                         <UserButton afterSignOutUrl="/" />
                                     </div>
                                 </SignedIn>

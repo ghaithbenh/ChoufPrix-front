@@ -9,6 +9,7 @@ export interface Product {
     category?: string;
     parentCategory?: string;
     subcategory?: string;
+    source?: 'scraped' | 'user';
     lastUpdated: string;
 }
 
@@ -27,6 +28,7 @@ export interface QueryParams {
     category?: string;
     parentCategory?: string;
     subcategory?: string;
+    source?: string;
     sort?: string;
     page?: number;
     limit?: number;
