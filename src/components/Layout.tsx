@@ -27,7 +27,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                         <div className="hidden md:flex items-center gap-6">
                             <nav className="flex items-center gap-4">
                                 <Link to="/" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Browse</Link>
-                                <Link to="/dashboard" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Dashboard</Link>
+                                {(isAdmin || user?.publicMetadata?.role === 'sub-admin') && (
+                                    <Link to="/dashboard" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Dashboard</Link>
+                                )}
+                                {isAdmin && (
+                                    <Link to="/admin/users" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Utilisateurs</Link>
+                                )}
                                 <Link to="/marketplace" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Marketplace</Link>
                                 <SignedIn>
                                     <Link to="/tracked" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Tracked Items</Link>

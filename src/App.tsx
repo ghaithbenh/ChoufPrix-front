@@ -8,6 +8,7 @@ import TrackedItems from './pages/TrackedItems';
 import AddProduct from './pages/AddProduct';
 import MyProducts from './pages/MyProducts';
 import Marketplace from './pages/Marketplace';
+import AdminUsers from './pages/AdminUsers';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,6 +32,7 @@ function App() {
             <Route path="/add-product" element={<AddProduct />} />
             <Route path="/my-products" element={<MyProducts />} />
             <Route path="/marketplace" element={<Marketplace />} />
+            <Route path="/admin/users" element={<AdminUsers />} />
           </Routes>
         </Layout>
       </Router>

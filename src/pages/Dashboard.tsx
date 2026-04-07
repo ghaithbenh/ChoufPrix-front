@@ -10,6 +10,8 @@ import {
     ShoppingBag, Store, Clock, PlusCircle, Activity,
     CheckCircle2, XCircle, Loader2, TrendingUp, DollarSign
 } from 'lucide-react';
+import { useUser, useAuth } from '@clerk/clerk-react';
+import { useNavigate } from 'react-router-dom';
 
 const API_URL = 'http://localhost:3001/api';
 const SOCKET_URL = 'http://localhost:3001';
@@ -35,15 +37,32 @@ const getStoreColor = (name: string) => {
 };
 
 const Dashboard: React.FC = () => {
+    const { user, isLoaded } = useUser();
+    const { getToken } = useAuth();
+    const navigate = useNavigate();
+    const isAdmin = user?.publicMetadata?.role === 'admin';
+    const isSubAdmin = user?.publicMetadata?.role === 'sub-admin';
+    const assignedStore = user?.publicMetadata?.assignedStore as string;
+
+    useEffect(() => {
+        if (isLoaded && !isAdmin && !isSubAdmin) {
+            navigate('/');
+        }
+    }, [isLoaded, isAdmin, isSubAdmin, navigate]);
+
     const [stats, setStats] = useState<Stats | null>(null);
 
     const { data: initialStats, isLoading, isError } = useQuery({
         queryKey: ['stats'],
         queryFn: async () => {
-            const response = await axios.get(`${API_URL}/products/stats`);
+            const token = await getToken();
+            const response = await axios.get(`${API_URL}/products/stats`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             return response.data;
         }
     });
+
 
     useEffect(() => {
         if (initialStats) {
@@ -92,8 +111,13 @@ const Dashboard: React.FC = () => {
             {/* Header */}
             <div className="flex justify-between items-end">
                 <div>
-                    <h2 className="text-4xl font-black text-slate-900 tracking-tight">Tableau de bord <span className="text-blue-600">BI</span></h2>
-                    <p className="text-slate-500 font-medium mt-1">Analyse des prix et statut du scraper en temps réel.</p>
+                    <h2 className="text-4xl font-black text-slate-900 tracking-tight">
+                        {isSubAdmin ? `Stats ${assignedStore}` : 'Tableau de bord '}
+                        {!isSubAdmin && <span className="text-blue-600">BI</span>}
+                    </h2>
+                    <p className="text-slate-500 font-medium mt-1">
+                        {isSubAdmin ? `Analyse en temps réel pour ${assignedStore}.` : 'Analyse des prix et statut du scraper en temps réel.'}
+                    </p>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-100 rounded-2xl">
                     <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
