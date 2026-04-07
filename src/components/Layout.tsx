@@ -1,5 +1,6 @@
 import React from 'react';
 import { Search, Bell, ShoppingBag } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from '@clerk/clerk-react';
 import Chatbot from './Chatbot';
 
@@ -24,10 +25,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                         </div>
 
                         <div className="hidden md:flex items-center gap-6">
-                            <nav className="flex gap-4">
-                                <a href="/" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Browse</a>
-                                <a href="/dashboard" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Dashboard</a>
-                                <a href="#" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Tracked Items</a>
+                            <nav className="flex items-center gap-4">
+                                <Link to="/" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Browse</Link>
+                                <Link to="/dashboard" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Dashboard</Link>
+                                <SignedIn>
+                                    <Link to="/tracked" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Tracked Items</Link>
+                                </SignedIn>
                             </nav>
                             <div className="h-6 w-px bg-gray-200" />
                             <div className="flex items-center gap-3">

@@ -1,6 +1,9 @@
-import { ExternalLink, History } from 'lucide-react';
+import { ExternalLink, History, Heart } from 'lucide-react';
+import { useAuth, useClerk } from '@clerk/clerk-react';
+import { useState, useEffect } from 'react';
 import type { Product } from '../types';
 import { formatPrice } from '../lib/utils';
+import { trackedItemsService } from '../api/trackedItemsService';
 
 interface ProductCardProps {
     product: Product;
@@ -17,6 +20,55 @@ const getStoreColor = (store: string) => {
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
+    const { isSignedIn, getToken } = useAuth();
+    const { openSignIn } = useClerk();
+    const [isTracked, setIsTracked] = useState(false);
+    const [trackLoading, setTrackLoading] = useState(false);
+
+    useEffect(() => {
+        if (isSignedIn) {
+            checkIfTracked();
+        }
+    }, [isSignedIn]);
+
+    const checkIfTracked = async () => {
+        try {
+            const token = await getToken();
+            if (!token) return;
+            const ids = await trackedItemsService.getTrackedProductIds(token);
+            setIsTracked(ids.includes(product._id));
+        } catch {
+            // silently fail
+        }
+    };
+
+    const handleTrackToggle = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+
+        if (!isSignedIn) {
+            openSignIn();
+            return;
+        }
+
+        setTrackLoading(true);
+        try {
+            const token = await getToken();
+            if (!token) return;
+
+            if (isTracked) {
+                await trackedItemsService.untrackItem(token, product._id);
+                setIsTracked(false);
+            } else {
+                await trackedItemsService.trackItem(token, product._id);
+                setIsTracked(true);
+            }
+        } catch (err) {
+            console.error('Track toggle failed:', err);
+        } finally {
+            setTrackLoading(false);
+        }
+    };
+
     return (
         <div 
             className="group premium-card animate-fade-up p-6 flex flex-col h-full cursor-pointer"
@@ -31,6 +83,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
                 <div className={`absolute top-3 left-3 px-2.5 py-1 rounded-full border shadow-sm text-[10px] font-bold uppercase tracking-wider ${getStoreColor(product.store)}`}>
                     {product.store}
                 </div>
+                {/* Track Heart Button */}
+                <button
+                    onClick={handleTrackToggle}
+                    disabled={trackLoading}
+                    className={`absolute top-3 right-3 p-2 rounded-xl backdrop-blur border shadow-sm transition-all transform active:scale-90 disabled:opacity-50 ${
+                        isTracked
+                            ? 'bg-red-50 border-red-200 text-red-500 hover:bg-red-100'
+                            : 'bg-white/90 border-gray-100 text-gray-400 hover:text-red-500 hover:bg-red-50 hover:border-red-200'
+                    }`}
+                    title={isTracked ? 'Ne plus suivre' : 'Suivre ce produit'}
+                >
+                    <Heart className={`w-4 h-4 transition-all ${isTracked ? 'fill-red-500' : ''} ${trackLoading ? 'animate-pulse' : ''}`} />
+                </button>
             </div>
 
             <div className="flex flex-col flex-1 mt-2">

@@ -4,6 +4,7 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import ProductDetail from './pages/ProductDetail';
 import Dashboard from './pages/Dashboard';
+import TrackedItems from './pages/TrackedItems';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,6 +24,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/tracked" element={<TrackedItems />} />
           </Routes>
         </Layout>
       </Router>
