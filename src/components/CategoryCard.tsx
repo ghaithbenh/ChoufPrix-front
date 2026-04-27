@@ -12,7 +12,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, productCount, ind
     return (
         <Link
             to={`/category/${category.slug}`}
-            className="group relative overflow-hidden rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+            className="group relative overflow-hidden rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 animate-stagger-in"
             style={{ animationDelay: `${index * 80}ms` }}
             id={`category-card-${category.slug}`}
         >
@@ -43,7 +43,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, productCount, ind
                 <div className="flex items-center justify-between mt-4">
                     {productCount !== undefined && (
                         <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-white/90 text-xs font-bold">
-                            {productCount} sous-catégories
+                            {productCount} produits
                         </span>
                     )}
                     <div className="ml-auto flex items-center gap-1 text-white/70 text-sm font-medium group-hover:text-white group-hover:translate-x-1 transition-all duration-300">

@@ -7,6 +7,7 @@ export interface PaginatedResponse<T> {
     page: number;
     limit: number;
     totalPages: number;
+    normalized?: any;
 }
 
 export const productService = {
@@ -15,9 +16,12 @@ export const productService = {
         return response.data;
     },
 
-    async searchProducts(params: { q: string; minPrice?: number; maxPrice?: number; category?: string; parentCategory?: string; subcategory?: string; source?: string }): Promise<{
+    async searchProducts(params: { q: string; minPrice?: number; maxPrice?: number; category?: string; parentCategory?: string; subcategory?: string; source?: string; page?: number; limit?: number }): Promise<{
         normalized: any;
         results: Product[];
+        total: number;
+        page: number;
+        totalPages: number;
     }> {
         const response = await apiClient.get('/products/search', { params });
         return response.data;
@@ -106,5 +110,10 @@ export const productService = {
             counts[parent] = subs.length;
         }
         return counts;
+    },
+
+    async getProductCounts(): Promise<Record<string, number>> {
+        const response = await apiClient.get<Record<string, number>>('/products/counts');
+        return response.data;
     },
 };

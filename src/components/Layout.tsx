@@ -83,9 +83,20 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 {children}
             </main>
 
-            <footer className="bg-gray-50 border-t border-gray-200 py-8 transition-colors duration-300">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-500 text-sm">
-                    © {new Date().getFullYear()} ChoufPrix - Meilleurs prix en Tunisie
+            <footer className="bg-white border-t border-gray-200/50 py-12 transition-colors duration-300">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center">
+                    <div className="flex items-center gap-2 mb-4">
+                        <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center shadow-md shadow-blue-200">
+                            <ShoppingBag className="text-white w-4 h-4" />
+                        </div>
+                        <span className="text-xl font-black tracking-tight gradient-text">ChoufPrix</span>
+                    </div>
+                    <p className="text-center text-gray-500 text-sm max-w-md mb-6 font-medium">
+                        Find the best prices in Tunisia. Compare, track, and save on your favorite products across 100+ stores.
+                    </p>
+                    <div className="text-center text-gray-400 text-xs font-medium">
+                        © {new Date().getFullYear()} ChoufPrix - Meilleurs prix en Tunisie
+                    </div>
                 </div>
             </footer>
             <Chatbot />

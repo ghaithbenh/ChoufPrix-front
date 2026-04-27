@@ -55,13 +55,15 @@ const SearchResults: React.FC = () => {
                     minPrice: minPrice ? Number(minPrice) * 1000 : undefined,
                     maxPrice: maxPrice ? Number(maxPrice) * 1000 : undefined,
                     source: store || undefined,
+                    page: page,
+                    limit: 12,
                 });
                 const sortedResults = [...searchData.results].sort((a, b) => a.price - b.price);
                 return {
                     data: sortedResults,
-                    total: sortedResults.length,
-                    page: 1,
-                    totalPages: 1,
+                    total: searchData.total,
+                    page: searchData.page,
+                    totalPages: searchData.totalPages,
                     normalized: searchData.normalized,
                 };
             }

@@ -1,4 +1,4 @@
-import { ExternalLink, History, Heart } from 'lucide-react';
+import { ExternalLink, History, Heart, ShoppingCart, TrendingDown } from 'lucide-react';
 import { useAuth, useClerk } from '@clerk/clerk-react';
 import { useState, useEffect } from 'react';
 import type { Product } from '../types';
@@ -10,13 +10,12 @@ interface ProductCardProps {
     onClick: () => void;
 }
 
-const getStoreColor = (store: string) => {
-    switch (store.toLowerCase()) {
-        case 'mytek': return 'bg-orange-100 text-orange-700 border-orange-200';
-        case 'tunisianet': return 'bg-blue-100 text-blue-700 border-blue-200';
-        case 'scoop': return 'bg-purple-100 text-purple-700 border-purple-200';
-        default: return 'bg-gray-100 text-gray-700 border-gray-200';
-    }
+const getStoreStyles = (store: string) => {
+    const s = store.toLowerCase();
+    if (s.includes('mytek')) return 'from-orange-400 to-orange-600 shadow-orange-200/50';
+    if (s.includes('tunisianet')) return 'from-blue-500 to-blue-700 shadow-blue-200/50';
+    if (s.includes('scoop')) return 'from-purple-500 to-purple-700 shadow-purple-200/50';
+    return 'from-slate-600 to-slate-800 shadow-slate-200/50';
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
@@ -44,7 +43,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
 
     const handleTrackToggle = async (e: React.MouseEvent) => {
         e.stopPropagation();
-
         if (!isSignedIn) {
             openSignIn();
             return;
@@ -69,77 +67,109 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
         }
     };
 
+    const getGlowClass = (store: string) => {
+        const s = store.toLowerCase();
+        if (s.includes('mytek')) return 'glow-mytek';
+        if (s.includes('tunisianet')) return 'glow-tunisianet';
+        if (s.includes('scoop')) return 'glow-scoop';
+        return 'shadow-slate-200/50';
+    };
+
     return (
         <div 
-            className="group premium-card animate-fade-up p-6 flex flex-col h-full cursor-pointer"
+            className="group relative flex flex-col bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-slate-200/60 transition-all duration-500 hover:-translate-y-2 cursor-pointer overflow-hidden p-5"
             onClick={onClick}
+            style={{ perspective: '1000px' }}
         >
-            <div className="relative aspect-square rounded-2xl overflow-hidden bg-white border border-gray-100 mb-4">
+            {/* Image Container */}
+            <div className={`relative aspect-square rounded-[1.5rem] bg-slate-50/50 border border-slate-100/50 overflow-hidden mb-5 transition-all duration-500 group-hover:bg-white group-hover:rotate-x-2 group-hover:rotate-y-1 ${getGlowClass(product.store)}`}>
+                {/* Background Store Glow */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${getStoreStyles(product.store)} opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500`} />
+                
+                {/* Shimmer on Hover */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 shimmer-effect pointer-events-none" />
+
                 <img 
                     src={product.image || 'https://via.placeholder.com/300x300?text=No+Image'} 
                     alt={product.name}
-                    className="w-full h-full object-contain p-6 transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-contain p-6 transition-all duration-700 group-hover:scale-110 group-hover:translate-z-10"
+                    style={{ transformStyle: 'preserve-3d' }}
                 />
-                <div className={`absolute top-3 left-3 px-2.5 py-1 rounded-full border shadow-sm text-[10px] font-bold uppercase tracking-wider ${getStoreColor(product.store)}`}>
+                
+                {/* Store Badge - Glassmorphism */}
+                <div className={`absolute top-3 left-3 px-3 py-1.5 rounded-xl backdrop-blur-md bg-gradient-to-br ${getStoreStyles(product.store)} text-white text-[9px] font-black uppercase tracking-widest shadow-lg border border-white/20 z-20`}>
                     {product.store}
                 </div>
-                {product.source === 'user' && (
-                    <div className="absolute top-10 left-3 px-2.5 py-1 rounded-full bg-blue-600 text-white border border-blue-500 shadow-sm text-[10px] font-black uppercase tracking-wider">
-                        Communauté
-                    </div>
-                )}
-                {/* Track Heart Button */}
+
+                {/* Tracking Action */}
                 <button
                     onClick={handleTrackToggle}
                     disabled={trackLoading}
-                    className={`absolute top-3 right-3 p-2 rounded-xl backdrop-blur border shadow-sm transition-all transform active:scale-90 disabled:opacity-50 ${
+                    className={`absolute top-3 right-3 p-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all transform active:scale-90 z-20 ${
                         isTracked
-                            ? 'bg-red-50 border-red-200 text-red-500 hover:bg-red-100'
-                            : 'bg-white/90 border-gray-100 text-gray-400 hover:text-red-500 hover:bg-red-50 hover:border-red-200'
+                            ? 'bg-red-500 border-red-400 text-white shadow-red-200'
+                            : 'bg-white/80 border-white text-slate-400 hover:text-red-500 hover:bg-white'
                     }`}
-                    title={isTracked ? 'Ne plus suivre' : 'Suivre ce produit'}
                 >
-                    <Heart className={`w-4 h-4 transition-all ${isTracked ? 'fill-red-500' : ''} ${trackLoading ? 'animate-pulse' : ''}`} />
+                    <Heart className={`w-4 h-4 ${isTracked ? 'fill-current' : ''}`} />
                 </button>
-            </div>
 
-            <div className="flex flex-col flex-1 mt-2">
-                <h3 className="font-bold text-gray-900 line-clamp-2 min-h-[3rem] group-hover:text-blue-600 transition-colors leading-tight mb-2">
-                    {product.name}
-                </h3>
-
-                {product.category && (
-                    <div className="flex items-center gap-1.5 mb-4">
-                        <span className="px-2 py-0.5 bg-gray-50 text-gray-500 text-[10px] font-bold rounded-lg border border-gray-200 uppercase tracking-tight">
-                            {product.category}
-                        </span>
+                {/* Quick Indicators */}
+                {product.source === 'user' && (
+                    <div className="absolute bottom-3 left-3 px-2 py-1 rounded-lg bg-blue-600/90 backdrop-blur-sm text-white text-[8px] font-black uppercase tracking-tighter shadow-sm border border-blue-400/30 z-20">
+                        Communauté
                     </div>
                 )}
-                
-                <div className="mt-auto pt-4 flex flex-col gap-3">
-                    <div className="flex items-end justify-between">
+            </div>
+
+            {/* Content Section */}
+            <div className="flex flex-col flex-1">
+                <div className="mb-2">
+                    <span className="text-[10px] font-black text-blue-600/60 uppercase tracking-widest mb-1 block">
+                        {product.parentCategory || 'Produit'}
+                    </span>
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900 line-clamp-2 min-h-[2.5rem] leading-tight group-hover:text-blue-600 transition-colors font-outfit">
+                        {product.name}
+                    </h3>
+                </div>
+
+                <div className="mt-auto pt-4 flex flex-col gap-4">
+                    {/* Price Section */}
+                    <div className="flex items-end justify-between border-t border-slate-50 pt-4">
                         <div className="flex flex-col">
-                            <span className="text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-0.5">Prix Actuel</span>
-                            <span className="text-xl font-black text-gray-900 leading-none">{formatPrice(product.price)}</span>
+                            <div className="flex items-center gap-1.5 text-emerald-600 text-[10px] font-black uppercase tracking-tighter mb-0.5">
+                                <TrendingDown className="w-3 h-3" />
+                                Meilleur Prix
+                            </div>
+                            <div className="flex items-baseline gap-1">
+                                <span className="text-2xl font-black text-slate-900 leading-none tracking-tighter font-outfit">
+                                    {formatPrice(product.price)}
+                                </span>
+                                <span className="text-xs font-bold text-slate-400 font-outfit uppercase">TND</span>
+                            </div>
                         </div>
-                        <button 
-                            className="p-2 rounded-xl bg-gray-50 text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-all transform active:scale-95 border border-transparent flex-shrink-0"
-                            title="Historique"
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            <History className="w-5 h-5" />
-                        </button>
+                        
+                        <div className="flex gap-2">
+                            <button 
+                                className="p-2.5 rounded-xl bg-slate-50 text-slate-400 hover:bg-blue-50 hover:text-blue-600 transition-all border border-slate-100"
+                                onClick={(e) => e.stopPropagation()}
+                                title="Historique"
+                            >
+                                <History className="w-4 h-4" />
+                            </button>
+                        </div>
                     </div>
                     
+                    {/* Primary Action */}
                     <a 
                         href={product.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-orange-500 text-white hover:bg-orange-600 transition-all transform active:scale-95 shadow-md hover:shadow-lg hover:shadow-orange-500/30 font-bold text-sm"
+                        className="w-full flex items-center justify-center gap-2 py-3 rounded-[1.25rem] bg-slate-900 text-white hover:bg-blue-600 transition-all shadow-lg hover:shadow-blue-200 font-black text-xs uppercase tracking-widest group/btn"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <span>Voir sur le site</span>
-                        <ExternalLink className="w-4 h-4" />
+                        <span>Acheter</span>
+                        <ExternalLink className="w-3.5 h-3.5 opacity-50 group-hover/btn:translate-x-0.5 transition-transform" />
                     </a>
                 </div>
             </div>

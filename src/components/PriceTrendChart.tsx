@@ -48,15 +48,15 @@ const PriceTrendChart: React.FC<PriceTrendChartProps> = ({ data }) => {
                         tickFormatter={formatDate}
                         axisLine={false}
                         tickLine={false}
-                        tick={{ fill: '#64748b', fontSize: 12 }}
+                        tick={{ fill: '#64748b', fontSize: 11, fontWeight: 700, fontFamily: 'Outfit' }}
                         dy={10}
                     />
                     <YAxis
-                        tickFormatter={(value) => `${(value / 1000).toFixed(0)} DT`}
+                        tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
                         axisLine={false}
                         tickLine={false}
-                        tick={{ fill: '#64748b', fontSize: 10 }}
-                        width={80}
+                        tick={{ fill: '#64748b', fontSize: 10, fontWeight: 700, fontFamily: 'Outfit' }}
+                        width={40}
                     />
                     <Tooltip content={(props) => <CustomTooltip {...props} />} />
                     <Area
