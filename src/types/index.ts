@@ -33,3 +33,9 @@ export interface QueryParams {
     page?: number;
     limit?: number;
 }
+
+export interface CategoryCount {
+    parentCategory: string;
+    subcategories: string[];
+    productCount: number;
+}

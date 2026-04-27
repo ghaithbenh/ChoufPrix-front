@@ -9,35 +9,40 @@ import AddProduct from './pages/AddProduct';
 import MyProducts from './pages/MyProducts';
 import Marketplace from './pages/Marketplace';
 import AdminUsers from './pages/AdminUsers';
+import CategoryPage from './pages/CategoryPage';
+import SearchResults from './pages/SearchResults';
 
 const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 1,
+    defaultOptions: {
+        queries: {
+            refetchOnWindowFocus: false,
+            retry: 1,
+        },
     },
-  },
 });
 
 function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Router>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/tracked" element={<TrackedItems />} />
-            <Route path="/add-product" element={<AddProduct />} />
-            <Route path="/my-products" element={<MyProducts />} />
-            <Route path="/marketplace" element={<Marketplace />} />
-            <Route path="/admin/users" element={<AdminUsers />} />
-          </Routes>
-        </Layout>
-      </Router>
-    </QueryClientProvider>
-  );
+    return (
+        <QueryClientProvider client={queryClient}>
+            <Router>
+                <Layout>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/category/:slug" element={<CategoryPage />} />
+                        <Route path="/search" element={<SearchResults />} />
+                        <Route path="/product/:id" element={<ProductDetail />} />
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/tracked" element={<TrackedItems />} />
+                        <Route path="/add-product" element={<AddProduct />} />
+                        <Route path="/my-products" element={<MyProducts />} />
+                        <Route path="/marketplace" element={<Marketplace />} />
+                        <Route path="/admin/users" element={<AdminUsers />} />
+                    </Routes>
+                </Layout>
+            </Router>
+        </QueryClientProvider>
+    );
 }
 
 export default App;
+

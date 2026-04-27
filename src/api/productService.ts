@@ -67,4 +67,44 @@ export const productService = {
             headers: { Authorization: `Bearer ${token}` }
         });
     },
+
+    /**
+     * Fetch products scoped to a parent category with optional subcategory and filters.
+     */
+    async getProductsByCategory(params: {
+        parentCategory: string;
+        subcategory?: string;
+        store?: string;
+        minPrice?: number;
+        maxPrice?: number;
+        search?: string;
+        page?: number;
+        limit?: number;
+    }): Promise<PaginatedResponse<Product>> {
+        const query: Record<string, unknown> = {
+            parentCategory: params.parentCategory,
+            subcategory: params.subcategory || undefined,
+            store: params.store || undefined,
+            minPrice: params.minPrice,
+            maxPrice: params.maxPrice,
+            search: params.search || undefined,
+            page: params.page || 1,
+            limit: params.limit || 12,
+        };
+        const response = await apiClient.get<PaginatedResponse<Product>>('/products', { params: query });
+        return response.data;
+    },
+
+    /**
+     * Build category counts from the taxonomy endpoint.
+     * Returns a map of parentCategory → count of subcategories.
+     */
+    async getCategoryCounts(): Promise<Record<string, number>> {
+        const taxonomy = await productService.getTaxonomy();
+        const counts: Record<string, number> = {};
+        for (const [parent, subs] of Object.entries(taxonomy)) {
+            counts[parent] = subs.length;
+        }
+        return counts;
+    },
 };
